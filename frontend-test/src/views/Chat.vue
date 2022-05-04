@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <CardChat id="62716b8df2074972be9ba190" />
+    <CardChat :cardItem="card" />
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
     };
   },
   async created() {
-    // this.card = this.getCardFirstCard();
+    this.card = this.getCardFirstCard;
   },
   methods: {
     async getChats() {
@@ -30,7 +30,7 @@ export default {
     },
   },
   computed: {
-    // ...mapGetters(["getCardFirstCard"]),
+    ...mapGetters(["getCardFirstCard"]),
   },
 };
 </script>

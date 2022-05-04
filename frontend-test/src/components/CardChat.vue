@@ -1,17 +1,21 @@
 <template>
-  <div v-if="!isLoading">
+  <div>
     <div class="card__container">
-      <h1 class="card__title">{{ card.drawer.question.type }}</h1>
-      <p class="card__message">{{ card.drawer.question.content }}</p>
+      <h1 class="card__title">{{ cardItem.drawer.question.type }}</h1>
+      <p class="card__message">{{ cardItem.drawer.question.content }}</p>
+
       <div class="card__button">
-        <button @click="isActivated = true" v-if="!isActivated">
+        <button @click="existChilds = true" v-if="!existChilds">
           Continuar
         </button>
-        <button @click="deleteCard" v-else>Eliminar</button>
+        <button @click="$emit('click:on'), (existChilds = false)">
+          Eliminar
+        </button>
       </div>
     </div>
-    <div v-if="isActivated">
-      <component :is="'CardChat'" id="62716b8df2074972be9ba190"></component>
+    <div v-if="existChilds">
+      <component :is="'CardChat'" :cardItem="card" @click:on="deleteCard">
+      </component>
     </div>
   </div>
 </template>
@@ -21,12 +25,16 @@ import { mapGetters } from "vuex";
 export default {
   name: "CardChat",
   props: {
-    id: String,
+    cardItem: Object,
+    exist: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      isActivated: false,
-      isLoading: true,
+      isExistNow: true,
+      existChilds: this.exist,
       card: {
         type: "",
         content: "",
@@ -35,29 +43,19 @@ export default {
     };
   },
   created() {
-    this.isLoading = true;
-    this.card = this.getCard;
-    this.isLoading = false;
+    console.log(this.cardItem);
+    this.card = this.getCardBySourceId(this.cardItem._id);
+    if (!this.card) {
+      this.existChilds = true;
+    }
   },
   methods: {
     deleteCard() {
-      console.log("eliminar card");
+      this.existChilds = false;
     },
   },
   computed: {
-    ...mapGetters(["getCards"]),
-    getCard() {
-      const res = this.getCards;
-      console.log(this.id);
-      console.log(res);
-      const card = res.find((card) => {
-        console.log(card);
-        console.log(card._id);
-        return card._id == this.id;
-      });
-      console.log(card);
-      return card;
-    },
+    ...mapGetters(["getCards", "getCardBySourceId"]),
   },
 };
 </script>
