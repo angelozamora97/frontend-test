@@ -35,8 +35,8 @@
           <v-btn
             color="primary"
             class="mx-2 my-2"
-            @click="existChilds = true"
-            v-if="!existChilds"
+            @click="(isActivated = true), (existChilds = true)"
+            v-if="!isActivated"
           >
             Continuar
           </v-btn>
@@ -67,8 +67,8 @@ export default {
   data() {
     return {
       isEditing: false,
-      isExistNow: true,
-      existChilds: this.exist,
+      isActivated: false,
+      existChilds: false,
       card: null,
       cardContent: "",
     };
@@ -78,13 +78,15 @@ export default {
     this.cardContent = this.cardItem.drawer.question.content;
     this.card = this.getCardBySourceId(this.cardItem._id);
     if (!this.card) {
-      this.existChilds = true;
+      this.isActivated = true;
+      this.existChilds = false;
     }
   },
   methods: {
     ...mapActions(["editCard"]),
     deleteCard() {
       this.existChilds = false;
+      this.isActivated = false;
     },
     async saveCard() {
       console.log(this.cardItem._id);
