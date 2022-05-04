@@ -1,7 +1,9 @@
 <template>
-  <div class="home">
-    <CardChat :cardItem="card" />
-  </div>
+  <v-row class="home mx-0">
+    <v-col cols="12" md="8" lg="6" class="mx-auto">
+      <CardChat :cardItem="card" />
+    </v-col>
+  </v-row>
 </template>
 
 <script>

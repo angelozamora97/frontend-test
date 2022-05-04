@@ -1,5 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import * as actions from "./actions";
+import * as mutations from "./mutations";
 
 Vue.use(Vuex);
 
@@ -122,9 +124,6 @@ export default new Vuex.Store({
     ],
   },
   getters: {
-    getCards: (state) => {
-      return state.cards;
-    },
     getCardBySourceId: (state) => (id: any) => {
       const card = state.cards.find(
         (card) => card.drawer.connection.sourceId == id
@@ -138,7 +137,7 @@ export default new Vuex.Store({
       return card;
     },
   },
-  mutations: {},
-  actions: {},
+  mutations: mutations,
+  actions: actions,
   modules: {},
 });
